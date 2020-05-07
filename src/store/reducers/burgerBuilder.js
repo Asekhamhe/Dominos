@@ -1,4 +1,5 @@
 import * as actionTypes from "../actions/actionTypes";
+import { act } from "react-dom/test-utils";
 
 const INGREDIENT_PRICES = {
   salad: 100,
@@ -24,6 +25,7 @@ const reducer = (state = initialState, action) => {
         },
         totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName],
       };
+
     case actionTypes.REOMOVE_INGREDIENT:
       return {
         ...state,
@@ -32,6 +34,19 @@ const reducer = (state = initialState, action) => {
           [action.ingredientName]: state.ingredients[action.ingredientName] - 1,
         },
         totalPrice: state.totalPrice - INGREDIENT_PRICES[action.ingredientName],
+      };
+
+    case actionTypes.SET_INGREDIENTS:
+      return {
+        ...state,
+        error: false,
+        ingredients: action.ingredients,
+      };
+
+    case actionTypes.FETCH_INGREDIENTS_FAILED:
+      return {
+        ...state,
+        error: true,
       };
 
     default:
