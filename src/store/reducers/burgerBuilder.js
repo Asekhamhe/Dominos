@@ -1,5 +1,4 @@
 import * as actionTypes from "../actions/actionTypes";
-import { act } from "react-dom/test-utils";
 
 const INGREDIENT_PRICES = {
   salad: 100,
