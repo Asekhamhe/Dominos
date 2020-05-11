@@ -13,14 +13,20 @@ export const purchaseBurgerFail = (error) => ({
   error,
 });
 
+export const purchaseBurgerStart = () => ({
+  type: actionTypes.PURCHASE_BURGER_START,
+});
+
 // asynchronous action creators makes a request to server
-export const purchaseBurgerStart = (orderData) => (dispatch) =>
+export const purchaseBurger = (orderData) => (dispatch) => {
+  dispatch(purchaseBurgerStart());
   axios
     .post("/orders.json", orderData)
     .then((res) => {
       console.log(res.data);
-      dispatch(purchaseBurgerSuccess(res.data, orderData));
+      dispatch(purchaseBurgerSuccess(res.data.name, orderData));
     })
     .catch((err) => {
       dispatch(purchaseBurgerFail(err));
     });
+};
