@@ -17,6 +17,10 @@ export const purchaseBurgerStart = () => ({
   type: actionTypes.PURCHASE_BURGER_START,
 });
 
+export const purchaseInit = () => ({
+  type: actionTypes.PURCHASE_INIT,
+});
+
 // asynchronous action creators makes a request to server
 export const purchaseBurger = (orderData) => (dispatch) => {
   dispatch(purchaseBurgerStart());
