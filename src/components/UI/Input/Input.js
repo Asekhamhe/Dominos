@@ -16,6 +16,7 @@ const Input = (props) => {
           {...props.elementconfig}
           value={props.value}
           onChange={props.changed}
+          autoComplete="new-password"
         />
       );
       break;

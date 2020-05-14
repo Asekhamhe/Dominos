@@ -22,10 +22,10 @@ export const purchaseInit = () => ({
 });
 
 // asynchronous action creators makes a request to server
-export const purchaseBurger = (orderData) => (dispatch) => {
+export const purchaseBurger = (orderData, token) => (dispatch) => {
   dispatch(purchaseBurgerStart());
   axios
-    .post("/orders.json", orderData)
+    .post(`/orders.json?auth=${token}`, orderData)
     .then((res) => {
       console.log(res.data);
       dispatch(purchaseBurgerSuccess(res.data.name, orderData));
@@ -52,10 +52,10 @@ export const fetchOrdersFail = (error) => ({
 
 // asynchronous action creator for fetch orders
 
-export const fetchOrders = () => (dispatch) => {
+export const fetchOrders = (token) => (dispatch) => {
   dispatch(fetchOrdersStart());
   axios
-    .get("/orders.json")
+    .get(`/orders.json?auth=${token}`)
     .then((res) => {
       const orders = Object.keys(res.data).map((key) => res.data[key]);
 
