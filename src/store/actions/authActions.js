@@ -16,9 +16,14 @@ export const authFail = (error) => ({
   error,
 });
 
-export const logOut = () => ({
-  type: actionTypes.AUTH_LOGOUT,
-});
+export const logOut = () => {
+  localStorage.removeItem("token");
+  localStorage.removeItem("expirationTime");
+  localStorage.removeItem("localId");
+  return {
+    type: actionTypes.AUTH_LOGOUT,
+  };
+};
 
 // asynchronous auth state
 
@@ -44,10 +49,38 @@ export const auth = (email, password, isSignup) => (dispatch) => {
   Axios.post(url, authData)
     .then((res) => {
       const { idToken, localId, expiresIn } = res.data;
+      const expirationTime = new Date(new Date().getTime() + expiresIn * 1000);
+      localStorage.setItem("token", idToken);
+      localStorage.setItem("expirationTime", expirationTime);
+      localStorage.setItem("localId", localId);
       dispatch(authSuccess(idToken, localId));
       dispatch(checkAuthTimeout(expiresIn));
     })
     .catch((err) => {
       dispatch(authFail(err.response.data.error));
     });
+};
+
+// redirect
+export const setAuthRedirectPath = (path) => ({
+  type: actionTypes.SET_AUTH_REDIRECT_PATH,
+  path,
+});
+
+export const checkAuthState = () => (dispatch) => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    dispatch(logOut());
+  } else {
+    const expirationTime = new Date(localStorage.getItem("expirationTime"));
+    const userId = localStorage.getItem("localId");
+    if (expirationTime > new Date()) {
+      dispatch(authSuccess(token, userId));
+      dispatch(
+        checkAuthTimeout(expirationTime.getSeconds() - new Date().getSeconds())
+      );
+    } else {
+      dispatch(logOut());
+    }
+  }
 };

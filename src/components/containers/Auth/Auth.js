@@ -5,6 +5,7 @@ import classes from "./Auth.module.css";
 import * as actions from "../../../store/actions/index";
 import { connect } from "react-redux";
 import Spinner from "../../UI/Spinner/Spinner";
+import { Redirect } from "react-router-dom";
 
 export class Auth extends Component {
   state = {
@@ -40,6 +41,13 @@ export class Auth extends Component {
     },
     isSignup: true,
   };
+
+  componentDidMount() {
+    if (!this.props.building && this.props.authRedirectPath !== "/") {
+      this.props.onSetAuthRedirectPath();
+    }
+  }
+
   checkValidity = (value, rules) => {
     let isValid = true;
     if (!rules) {
@@ -114,6 +122,10 @@ export class Auth extends Component {
       errorMessage = <p>{this.props.error.message}</p>;
     }
 
+    if (this.props.isAuthenticated) {
+      return <Redirect to={this.props.authRedirectPath} />;
+    }
+
     return (
       <div className={classes.Auth}>
         {errorMessage}
@@ -132,11 +144,16 @@ export class Auth extends Component {
 const mapStateToProps = (state) => ({
   loading: state.auth.loading,
   error: state.auth.error,
+  isAuthenticated: state.auth.token !== null,
+  building: state.burgerBuilder.building,
+  authRedirectPath: state.auth.authRedirectPath,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   onAuth: (email, password, isSignup) =>
     dispatch(actions.auth(email, password, isSignup)),
+
+  onSetAuthRedirectPath: () => dispatch(actions.setAuthRedirectPath("/")),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Auth);

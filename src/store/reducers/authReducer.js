@@ -5,6 +5,7 @@ const initialState = {
   userId: null,
   error: null,
   loading: false,
+  authRedirectPath: "/",
 };
 
 export default (state = initialState, action) => {
@@ -33,6 +34,12 @@ export default (state = initialState, action) => {
         ...state,
         token: null,
         userId: null,
+      };
+
+    case actionTypes.SET_AUTH_REDIRECT_PATH:
+      return {
+        ...state,
+        authRedirectPath: action.path,
       };
 
     default:
