@@ -52,10 +52,11 @@ export const fetchOrdersFail = (error) => ({
 
 // asynchronous action creator for fetch orders
 
-export const fetchOrders = (token) => (dispatch) => {
+export const fetchOrders = (token, userId) => (dispatch) => {
   dispatch(fetchOrdersStart());
+  const queryParams = `?auth=${token}&orderBy="userId"&equalTo="${userId}"`;
   axios
-    .get(`/orders.json?auth=${token}`)
+    .get(`/orders.json${queryParams}`)
     .then((res) => {
       const orders = Object.keys(res.data).map((key) => res.data[key]);
 
