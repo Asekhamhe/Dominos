@@ -16,7 +16,7 @@ export default (state = initialState, action) => {
     case actionTypes.PURCHASE_BURGER_START:
       return {
         ...state,
-        loading: false,
+        loading: true,
       };
 
     case actionTypes.PURCHASE_BURGER_SUCCESS:

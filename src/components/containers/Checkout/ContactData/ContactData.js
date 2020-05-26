@@ -140,7 +140,6 @@ class ContactData extends Component {
       updatedFormElement.validation
     );
     updatedFormElement.touched = true;
-    // console.log(updatedFormElement);
 
     updatedOrderForm[inputIdentifier] = updatedFormElement;
 
@@ -159,7 +158,6 @@ class ContactData extends Component {
       return { value: this.state.orderForm[key], key };
     });
 
-    // console.log(formElements);
     let form = (
       <form onSubmit={this.orderHandler}>
         {formElements.map((formElement, id) => {
