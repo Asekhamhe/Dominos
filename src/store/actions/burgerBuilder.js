@@ -7,7 +7,7 @@ export const addIngredient = (payload) => ({
 });
 
 export const removeIngredient = (payload) => ({
-  type: actionTypes.REOMOVE_INGREDIENT,
+  type: actionTypes.REMOVE_INGREDIENT,
   ingredientName: payload,
 });
 
